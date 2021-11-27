@@ -39,3 +39,4 @@ const onMessage = async (message) => {
 module.exports = {
   onMessage
 };
+
