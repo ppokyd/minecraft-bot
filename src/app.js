@@ -1,16 +1,15 @@
-const Bot = require('./bot');
+
 const dotenv = require('dotenv');
-// const abilities = require('./bot/abilities');
+const BotClient = require('./bot/client');
+const game = require('./controllers/game.controller');
 
 dotenv.config();
 
 (async () => {
   try {
-    await Bot.init();
+    await BotClient.spawn();
 
-    // setTimeout(async() => {
-    //   await abilities.move('backward', 5);
-    // }, 5e3);
+    game.listen();
 
   } catch (error) {
     console.error(error);

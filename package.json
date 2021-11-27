@@ -18,5 +18,7 @@
     "pino": "^7.4.1",
     "queue-promise": "^2.2.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "eslint": "^8.3.0"
+  }
 }

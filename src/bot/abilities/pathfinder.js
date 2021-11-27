@@ -1,7 +1,6 @@
-const Bot = require('../index');
-const { Movements, goals } = require('mineflayer-pathfinder');
-
-// const bot = Bot.instance;
+const { bot } = require('../client');
+const { goals } = require('mineflayer-pathfinder');
+const { findBlocks } = require('./finder');
 
 const MOVES = {
   forward: {
@@ -30,33 +29,33 @@ const MOVES = {
   },
 };
 
-const findBlocks = (name) => {
-  const mcData = require('minecraft-data')(Bot.instance.version);
-
-  // TODO: mcData.findItemOrBlockByName(name)
-  const ids = [...mcData.blocksArray]
-    .filter(block => block.name.includes(name))
-    .map(block => block.id);
-
-  return Bot.instance.findBlocks({ matching: ids, maxDistance: 128, count: 10 });
-};
+const _getFacingDirection = () => {
+  const getCardinal = (degrees) => ['N', 'N', 'E', 'E', 'S', 'S', 'W', 'W'][(degrees / 45) & 0x7];
+  const degrees = (bot.player.entity.yaw * 180 / Math.PI) - 180;
+  return getCardinal(degrees);
+}
 
 const move = async (direction, blocks = 1) => {
-  const mcData = require('minecraft-data')(Bot.instance.version);
-  const defaultMove = new Movements(Bot.instance, mcData);
+  const { position } = bot.player.entity;
+  const facing = _getFacingDirection();
+  const coords = MOVES[direction][facing](position, blocks);
 
-  const facing = Bot.getFacingDirection();
-  const coords = MOVES[direction][facing](Bot.position, blocks);
-
-  Bot.instance.pathfinder.setMovements(defaultMove);
-  await Bot.goTo(new goals.GoalXZ(coords.x, coords.z));
+  await _goTo(new goals.GoalXZ(coords.x, coords.z));
 };
 
 const find = async (blockName) => {
   const blocks = findBlocks(blockName);
 
-  await Bot.goTo(new goals.GoalNear(blocks[0].x, blocks[0].y, blocks[0].z, 1));
+  await _goTo(new goals.GoalNear(blocks[0].x, blocks[0].y, blocks[0].z, 1));
 };
+
+const _goTo = async (goal) => {
+  return new Promise((resolve) => {
+    bot.pathfinder.goto(goal, () => {
+      resolve();
+    });
+  })
+}
 
 module.exports = {
   move,
