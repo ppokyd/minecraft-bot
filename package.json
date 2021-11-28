@@ -8,7 +8,7 @@
     "compose": "docker-compose up -d",
     "start": "node ./src/app.js"
   },
-  "author": "",
+  "author": "petro.pokydko@gmail.com",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^10.0.0",
