@@ -2,16 +2,15 @@ const { bot } = require('../client');
 const { findBlocks } = require('./finder');
 
 const dig = async (blockName, amount) => {
-  await Promise.all(
-    Array(parseInt(amount)).fill(0).map(() => {
-      const blocks = findBlocks(blockName);
-      const target = blocks[0];
+  // eslint-disable-next-line no-unused-vars
+  for (let i of Array(parseInt(amount)).fill(0)) {
+    const blocks = findBlocks(blockName);
+    const target = blocks[0];
 
-      if (target && bot.canDigBlock(target)) {
-        return _dig(target);
-      }
-    })
-  );
+    if (target) {
+      await _dig(target);
+    }
+  }
 };
 
 const _dig = async(position) => {

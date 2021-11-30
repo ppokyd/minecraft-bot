@@ -39,14 +39,16 @@ const move = async (direction, blocks = 1) => {
   const { position } = bot.player.entity;
   const facing = _getFacingDirection();
   const coords = MOVES[direction][facing](position, blocks);
+  const goal = new goals.GoalXZ(coords.x, coords.z);
 
-  await _goTo(new goals.GoalXZ(coords.x, coords.z));
+  await _goTo(goal);
 };
 
 const find = async (blockName) => {
   const blocks = findBlocks(blockName);
+  const goal = new goals.GoalNear(blocks[0].x, blocks[0].y, blocks[0].z, 1);
 
-  await _goTo(new goals.GoalNear(blocks[0].x, blocks[0].y, blocks[0].z, 1));
+  await _goTo(goal);
 };
 
 const _goTo = async (goal) => {

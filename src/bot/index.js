@@ -18,7 +18,7 @@ class Bot {
     await abilities.find(blockName);
   }
 
-  async dig(blockName, amount) {
+  async dig(blockName, amount = 1) {
     await abilities.dig(blockName, amount);
   }
 }

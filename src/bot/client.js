@@ -1,6 +1,7 @@
 
 const mineflayer = require('mineflayer');
 const { pathfinder, Movements } = require('mineflayer-pathfinder');
+// const { mineflayer: mineflayerViewer } = require('prismarine-viewer');
 const inventoryViewer = require('mineflayer-web-inventory');
 
 const bot = mineflayer.createBot({
@@ -11,8 +12,6 @@ const bot = mineflayer.createBot({
 
 const mcData = require('minecraft-data')(bot.version);
 
-inventoryViewer(bot);
-
 const spawn = () => {
   return new Promise((resolve) => {
     bot.once('spawn', () => {
@@ -20,6 +19,9 @@ const spawn = () => {
 
       bot.loadPlugin(pathfinder);
       bot.pathfinder.setMovements(defaultMove);
+
+      // mineflayerViewer(bot, { port: 3007, firstPerson: true });
+      inventoryViewer(bot);
 
       console.log('Spawned!');
 
